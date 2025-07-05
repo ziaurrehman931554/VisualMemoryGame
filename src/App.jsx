@@ -13,13 +13,15 @@ function App() {
   const [coverTime, setCoverTime] = useState(1000);
   const [countdown, setCountdown] = useState(0);
   const [showNumbers, setShowNumbers] = useState(false);
-  const [numberCount, setNumberCount] = useState(3);
+  const [numberCount, setNumberCount] = useState(10);
   const [darkMode, setDarkMode] = useState(false);
   const [gameResult, setGameResult] = useState(null);
 
   // Toggle dark mode
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    localStorage.setItem("vme-darkMode", newDarkMode.toString());
   };
 
   // Load stats and theme from localStorage
@@ -41,19 +43,14 @@ function App() {
     localStorage.setItem("vme-losses", newLosses.toString());
   }, []);
 
-  // Save theme to localStorage
-  useEffect(() => {
-    localStorage.setItem("vme-darkMode", darkMode.toString());
-  }, [darkMode]);
-
   // Generate sequential numbers in random positions
   const generateNumbers = useCallback(() => {
     const nums = [];
     for (let i = 0; i < numberCount; i++) {
       nums.push({
         value: i,
-        x: Math.random() * 70 + 10,
-        y: Math.random() * 60 + 10,
+        x: Math.random() * 90 + 2,
+        y: Math.random() * 95 + 5,
         id: i,
       });
     }
@@ -238,7 +235,7 @@ function App() {
                 onClick={() => handleNumberClick(num)}
                 whileTap={{ scale: 0.9 }}
               >
-                {showNumbers && num.value}
+                {showNumbers && num.value + 1}
               </motion.div>
             ))}
 
@@ -280,12 +277,11 @@ function App() {
                   </label>
                   <input
                     type="number"
-                    min="1"
                     max="10"
                     value={numberCount}
                     onChange={(e) =>
                       setNumberCount(
-                        Math.min(10, Math.max(1, parseInt(e.target.value) || 3))
+                        Math.min(10, Math.max(1, parseInt(e.target.value)))
                       )
                     }
                     className={`border rounded px-2 py-1 w-16 text-sm ${
@@ -311,9 +307,7 @@ function App() {
                     max="10000"
                     step="100"
                     value={coverTime}
-                    onChange={(e) =>
-                      setCoverTime(parseInt(e.target.value) || 1000)
-                    }
+                    onChange={(e) => setCoverTime(parseInt(e.target.value))}
                     className={`border rounded px-2 py-1 w-20 text-sm ${
                       darkMode
                         ? "bg-gray-700 border-gray-600 text-white"

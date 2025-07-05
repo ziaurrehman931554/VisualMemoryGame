@@ -40,3 +40,12 @@
 .read-the-docs {
   color: #888;
 }
+
+.bubble {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  transform: translate(-50%, -50%); /* Centers the bubble */
+  pointer-events: auto;
+  transition: transform 0.1s ease; /* Smooth movement */
+}
